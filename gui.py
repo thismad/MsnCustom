@@ -2,11 +2,10 @@ from tkinter import *
 import clientClient
 
 
-class Afficheur(Tk):
+class Afficheur():
 
     def __init__(self):
         ################################################## creating the view
-        super().__init__(self)
         self.window = Tk()
         self.window.geometry("200x200")
 
@@ -45,14 +44,28 @@ class Afficheur(Tk):
 
        ################################################
 
-        self.client = clientClient.Sender()
+        self.client = clientClient.Sender(self.window)
+        self.window.protocol("WM_DELETE_WINDOW", self._quitConfirm)
+        self.window.bind("<<MSG_RECEIVED>>", self._changeTextLabels)
+        self.window.mainloop()
 
         #TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
         #self.window.mainloop() # fais un thread et n'execute plus le reste du code..
 
 
+    def _quitConfirm(self):
+        print("nous fermons la fenêtre et le socket associé")
+        self.client.sendToStream("fin")  # notify the server that we end the communication
+        self.window.destroy()
+
+    def _changeTextLabels(self,event):
+        self.msg1.set(self.msg2.get())
+        self.msg2.set(self.msg3.get())
+        self.msg3.set(self.client.msgReceivedDecoded)
+
+
     def clearField(self,event):
-        self._msgToSend = self.entry
+        self._msgToSend = self.entry.get()
         self.client.sendToStream(self._msgToSend)
         self.entry.set("")
 

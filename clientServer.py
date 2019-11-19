@@ -17,14 +17,12 @@ while serverLance :
         connectedSocket, infosSocket = sockets.accept()
         connectedSocketList.append(connectedSocket)
 
-
-    print("connected sockets : " + str(connectedSocketList))
     clientToRead = []
     receivedMsgList = []
 
     try:
         clientToRead, wlist, xlist = select.select(connectedSocketList, [], [], 0.05)
-        print("client to read : " + str(clientToRead))
+
 
     except select.error:
         pass
@@ -40,7 +38,7 @@ while serverLance :
                 for item in receivedMsgList:
                     socket.send(item)
             receivedMsgList.clear()
-            print(receivedMsg.decode())
+
 
 for sockets in connectedSocketList:
     sockets.close()
