@@ -2,9 +2,11 @@ from tkinter import *
 import clientClient
 
 
-class Afficheur:
+class Afficheur(Tk):
 
     def __init__(self):
+        ################################################## creating the view
+        super().__init__(self)
         self.window = Tk()
         self.window.geometry("200x200")
 
@@ -15,7 +17,6 @@ class Afficheur:
         # msgToSend to be received in clientClient
         # newEntry True if the user typed something new
         self._msgToSend = ""
-        self._newEntry = False
         self.pseudo.set("Choisissez votre pseudo !")
 
         self.msg1 = StringVar(value="...")
@@ -41,18 +42,21 @@ class Afficheur:
 
         self.window.grid_columnconfigure(0, weight=1)
         self.window.grid_rowconfigure(0, weight=1)
-        print("salut")
+
+       ################################################
+
+        self.client = clientClient.Sender()
+
         #TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
-        self.window.mainloop() # fais un thread et n'execute plus le reste du code..
-        print("ok")
+        #self.window.mainloop() # fais un thread et n'execute plus le reste du code..
+
 
     def clearField(self,event):
         self._msgToSend = self.entry
-        self._newEntry = True
+        self.client.sendToStream(self._msgToSend)
         self.entry.set("")
 
     def _getMsg(self):
-        self._newEntry = False  # when we fetch the newMsg newEntry is reseted
         return self._msgToSend
 
     def _setMsg(self, newMsg):

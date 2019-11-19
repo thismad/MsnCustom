@@ -3,8 +3,7 @@ import socket
 import gui
 
 
-class Sender:
-
+class Sender: #controller
     def __init__(self):
         self.start = True
         self.socketClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,6 +17,8 @@ class Sender:
             pass
         self.pseudo = self.graphicalInterface.msgToSend # pseudo = newly entered input
 
+    def sendToStream(self, msg): #TODO: do the case if "fin"
+        self.socketClient.send(msg.encode())
 
     def run(self):
         while self.start :
