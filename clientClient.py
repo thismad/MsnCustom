@@ -9,7 +9,7 @@ class Sender: #controller
         self.window=window
         self.start = True
         self.socketClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socketClient.connect(("192.168.1.42", 12800))
+        self.socketClient.connect(("192.168.1.5", 12800))
         self.msgReceivedDecoded = ""
         self.thread = threading.Thread(target=self.receivingThread,daemon=True)
         self.thread.start()
