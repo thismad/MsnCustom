@@ -7,11 +7,12 @@ class Afficheur():
     def __init__(self):
         ################################################## creating the view
         self.window = Tk()
-        self.window.geometry("200x200")
+        self.window.geometry("300x200")
 
         # create texts labels
-        self.entry=StringVar()
-        self.pseudo=StringVar()
+        self.entry = StringVar()
+        self.pseudo = StringVar()
+        self.pseudoEntered = False
 
         # msgToSend to be received in clientClient
         # newEntry True if the user typed something new
@@ -24,49 +25,51 @@ class Afficheur():
 
         self.window.bind("<Return>", self.clearField)
 
-        pseudoLabel = Label(self.window, textvariable=self.pseudo)
+        pseudoLabel = Label(self.window, textvariable=self.pseudo, font=("Courier",15),fg="red")
         label1 = Label(self.window, textvariable=self.msg1)
         label2 = Label(self.window, textvariable=self.msg2)
         label3 = Label(self.window, textvariable=self.msg3)
-        labelEntry = Label(self.window, textvariable=self.entry)
         entryMsg = Entry(textvariable=self.entry)
-
 
         pseudoLabel.grid(row=0, sticky="wn")
         label1.grid(row=1, sticky="w")
         label2.grid(row=2, sticky="w")
         label3.grid(row=3, sticky="w")
         entryMsg.grid(row=4, sticky="w")
-        labelEntry.grid(row=5)
 
         self.window.grid_columnconfigure(0, weight=1)
         self.window.grid_rowconfigure(0, weight=1)
 
-       ################################################
+        ################################################
 
         self.client = clientClient.Sender(self.window)
         self.window.protocol("WM_DELETE_WINDOW", self._quitConfirm)
         self.window.bind("<<MSG_RECEIVED>>", self._changeTextLabels)
         self.window.mainloop()
 
-        #TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
-        #self.window.mainloop() # fais un thread et n'execute plus le reste du code..
-
+        # TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
+        # self.window.mainloop() # fais un thread et n'execute plus le reste du code..
 
     def _quitConfirm(self):
         print("nous fermons la fenêtre et le socket associé")
         self.client.sendToStream("fin")  # notify the server that we end the communication
         self.window.destroy()
 
-    def _changeTextLabels(self,event):
+    def _changeTextLabels(self, event):
         self.msg1.set(self.msg2.get())
         self.msg2.set(self.msg3.get())
         self.msg3.set(self.client.msgReceivedDecoded)
 
-
-    def clearField(self,event):
+    def clearField(self, event):
         self._msgToSend = self.entry.get()
-        self.client.sendToStream(self._msgToSend)
+
+        if not self.pseudoEntered: # will execute only once if pseudo hasn't been entered yet
+            self.pseudo.set(self.entry.get())
+            self.pseudoEntered=True
+        else:
+            self._msgToSend = self.pseudo.get()+": "+self._msgToSend
+            self.client.sendToStream(self._msgToSend)
+
         self.entry.set("")
 
     def _getMsg(self):
@@ -80,14 +83,3 @@ class Afficheur():
 
     msgToSend = property(_getMsg, _setMsg)
     newEntry = property(_getNewEntry)
-
-
-
-
-
-
-
-
-
-
-
