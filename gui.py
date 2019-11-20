@@ -7,9 +7,23 @@ class Afficheur():
     def __init__(self):
         ################################################## creating the view
         self.window = Tk()
+        container = Frame(self.window)
         self.window.geometry("300x200")
+        container.grid()
+        container.grid_columnconfigure(0, weight=1)
+        ################################################
+        self.window.mainloop()
+
+        # TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
+        # self.window.mainloop() # fais un thread et n'execute plus le reste du code..
+
+
+class communicationFrame(Frame):
+    def __init__(self, master, controller):
+        Frame.__init__(self, master)
 
         # create texts labels
+        self.window = master
         self.entry = StringVar()
         self.pseudo = StringVar()
         self.pseudoEntered = False
@@ -37,18 +51,12 @@ class Afficheur():
         label3.grid(row=3, sticky="w")
         entryMsg.grid(row=4, sticky="w")
 
-        self.window.grid_columnconfigure(0, weight=1)
+        self.window.grid_columnconfigure(0, weight=3)
+        self.window.grid_rowconfigure(1, weight=1)
         self.window.grid_rowconfigure(0, weight=1)
 
-        ################################################
-
-        self.client = clientClient.Sender(self.window)
         self.window.protocol("WM_DELETE_WINDOW", self._quitConfirm)
         self.window.bind("<<MSG_RECEIVED>>", self._changeTextLabels)
-        self.window.mainloop()
-
-        # TODO modify here because it blocks everything after once it starts this loop. Lets make a new thread maybe
-        # self.window.mainloop() # fais un thread et n'execute plus le reste du code..
 
     def _quitConfirm(self):
         print("nous fermons la fenêtre et le socket associé")
@@ -63,11 +71,11 @@ class Afficheur():
     def clearField(self, event):
         self._msgToSend = self.entry.get()
 
-        if not self.pseudoEntered: # will execute only once if pseudo hasn't been entered yet
+        if not self.pseudoEntered:  # will execute only once if pseudo hasn't been entered yet
             self.pseudo.set(self.entry.get())
-            self.pseudoEntered=True
+            self.pseudoEntered = True
         else:
-            self._msgToSend = self.pseudo.get()+": "+self._msgToSend
+            self._msgToSend = self.pseudo.get() + ": " + self._msgToSend
             self.client.sendToStream(self._msgToSend)
 
         self.entry.set("")
@@ -81,5 +89,6 @@ class Afficheur():
     def _getNewEntry(self):
         return self._newEntry
 
-    msgToSend = property(_getMsg, _setMsg)
-    newEntry = property(_getNewEntry)
+msgToSend = property(_getMsg, _setMsg)
+newEntry = property(_getNewEntry)
+
