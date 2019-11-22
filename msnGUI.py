@@ -10,7 +10,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(500, 266)
         MainWindow.setAutoFillBackground(False)
@@ -37,7 +36,6 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout.addWidget(self.pushButton)
         self.stackedWidget.addWidget(self.page)
-
         self.page_2 = QtWidgets.QWidget()
         self.page_2.setObjectName("page_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.page_2)
@@ -66,8 +64,10 @@ class Ui_MainWindow(object):
         self.label_6 = QtWidgets.QLabel(self.widget_2)
         self.label_6.setObjectName("label_6")
         self.verticalLayout_2.addWidget(self.label_6)
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.widget_2)
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.verticalLayout_2.addWidget(self.lineEdit_2)
         self.horizontalLayout_2.addWidget(self.widget_2)
-
         self.widget = QtWidgets.QWidget(self.page_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(1)
@@ -98,7 +98,6 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_2)
         self.horizontalLayout.addWidget(self.stackedWidget)
         MainWindow.setCentralWidget(self.centralwidget)
-
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -109,17 +108,16 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "WALLAH MSN"))
         self.label.setText(_translate("MainWindow", "Enter your name!"))
         self.pushButton.setText(_translate("MainWindow", "connect"))
-        self.label_2.setText(_translate("MainWindow", "TextLabel"))
-        self.label_3.setText(_translate("MainWindow", "TextLabel"))
-        self.label_4.setText(_translate("MainWindow", "TextLabel"))
-        self.label_5.setText(_translate("MainWindow", "TextLabel"))
-        self.label_6.setText(_translate("MainWindow", "TextLabel"))
+        self.label_2.setText(_translate("MainWindow", ""))
+        self.label_3.setText(_translate("MainWindow", ""))
+        self.label_4.setText(_translate("MainWindow", ""))
+        self.label_5.setText(_translate("MainWindow", ""))
+        self.label_6.setText(_translate("MainWindow", ""))
         self.label_10.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600;\">Connected :</span></p></body></html>"))
-        self.label_7.setText(_translate("MainWindow", "TextLabel"))
-        self.label_8.setText(_translate("MainWindow", "TextLabel"))
-        self.label_9.setText(_translate("MainWindow", "TextLabel"))
-
+        self.label_7.setText(_translate("MainWindow", ""))
+        self.label_8.setText(_translate("MainWindow", ""))
+        self.label_9.setText(_translate("MainWindow", ""))
 

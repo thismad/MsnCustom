@@ -37,7 +37,7 @@ class Server:
                 for client in clientToRead:
                     receivedMsg = (client.recv(1024))
                     self.handleSerial(receivedMsg, client)
-                    self.sendMsgToAllSockets()
+
 
 
     def handleSerial(self, receivedMsg, socketClient):
@@ -45,26 +45,25 @@ class Server:
         actionNb, msg = Deserializer.deserializeMsg(receivedMsg)
 
         if actionNb == Serializer.textEntry:
-            msgToSend = self.connectedDict[socketClient] + ": " + msg
-            self.sendMsgToAllSockets(msgToSend)
+            self.sendMsgToAllSockets(receivedMsg)
 
         elif actionNb == Serializer.disconnected:
+            self.sendMsgToAllSockets(receivedMsg) # if disconnection message, resend it to all the sockets so they can update their connected List
             del self.connectedDict[socketClient]
             socketClient.close()
             if not bool(self.connectedDict):
                 self.serverLance = False
                 self.connexionPrincipale.close()
 
-
         elif actionNb == Serializer.pseudo:
             self.connectedDict[socketClient] = msg
+            self.updateClientsConnectedPseudos()
 
 
     def sendMsgToAllSockets(self, msg):
         """send the messages encoded to all the connected sockets """
         for socket in self.connectedSocketList:
-                socket.send(msg.encode())
-
+            socket.send(msg)
 
     def updateClientsConnectedPseudos(self):
             pseudosListString = Serializer.serializePseudoList(self.connectedDict.values())
@@ -73,7 +72,8 @@ class Server:
 
 
 
-
+serv = Server()
+serv.startServer()
 
 
 

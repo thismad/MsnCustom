@@ -15,7 +15,8 @@ class Serializer():
         return msg.encode()
 
     @staticmethod
-    def serializeDisconnection():
+    def serializeDisconnection(pseudo):
+        pseudo = Serializer.disconnected + pseudo
         return Serializer.disconnected.encode()
 
     @staticmethod
