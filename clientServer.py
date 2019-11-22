@@ -1,48 +1,79 @@
 import socket
 import select
 import re
+from Deserializer import Deserializer
+from Serializer import Serializer
 
-connexionPrincipale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connexionPrincipale.bind(("", 12800))
-connexionPrincipale.listen((5))
-serverLance = True
-connectedSocketList = []
-
-while serverLance :
-
-    socketClients, wlist, xlist = select.select([connexionPrincipale],
-                                                [], [], 0.05)
-
-    for sockets in socketClients:
-        connectedSocket, infosSocket = sockets.accept()
-        connectedSocketList.append(connectedSocket)
-
-    clientToRead = []
-    receivedMsgList = []
-
-    try:
-        clientToRead, wlist, xlist = select.select(connectedSocketList, [], [], 0.05)
+class Server:
 
 
-    except select.error:
-        pass
+    def __init__(self):
+        self.connexionPrincipale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connexionPrincipale.bind(("", 12800))
+        self.connexionPrincipale.listen((5))
+        self.serverLance = True
+        self.connectedSocketList = []
+        self.connectedDict ={}
 
-    else:
-        for i,client in enumerate(clientToRead):
-            receivedMsg = (client.recv(1024))
-            receivedMsgList.append(receivedMsg+b"\n")
-            if receivedMsg == b"fin":
-                serverLance = False
+    def startServer(self):
+        while self.serverLance :
 
-            for socket in connectedSocketList:
-                for item in receivedMsgList:
-                    socket.send(item)
-            receivedMsgList.clear()
+            socketClients, wlist, xlist = select.select([self.connexionPrincipale],
+                                                        [], [], 0.05)
+
+            for sockets in socketClients:
+                connectedSocket, infosSocket = sockets.accept()
+                self.connectedSocketList.append(connectedSocket)
 
 
-for sockets in connectedSocketList:
-    sockets.close()
-connexionPrincipale.close()
+            try:
+                clientToRead, wlist, xlist = select.select(self.connectedSocketList, [], [], 0.05)
+
+
+            except select.error:
+                pass
+
+            else:
+                for client in clientToRead:
+                    receivedMsg = (client.recv(1024))
+                    self.handleSerial(receivedMsg, client)
+                    self.sendMsgToAllSockets()
+
+
+    def handleSerial(self, receivedMsg, socketClient):
+        """after receiving the message chose the task to do considering its prefix"""
+        actionNb, msg = Deserializer.deserializeMsg(receivedMsg)
+
+        if actionNb == Serializer.textEntry:
+            msgToSend = self.connectedDict[socketClient] + ": " + msg
+            self.sendMsgToAllSockets(msgToSend)
+
+        elif actionNb == Serializer.disconnected:
+            del self.connectedDict[socketClient]
+            socketClient.close()
+            if not bool(self.connectedDict):
+                self.serverLance = False
+                self.connexionPrincipale.close()
+
+
+        elif actionNb == Serializer.pseudo:
+            self.connectedDict[socketClient] = msg
+
+
+    def sendMsgToAllSockets(self, msg):
+        """send the messages encoded to all the connected sockets """
+        for socket in self.connectedSocketList:
+                socket.send(msg.encode())
+
+
+    def updateClientsConnectedPseudos(self):
+            pseudosListString = Serializer.serializePseudoList(self.connectedDict.values())
+            self.sendMsgToAllSockets(pseudosListString)
+
+
+
+
+
 
 
 

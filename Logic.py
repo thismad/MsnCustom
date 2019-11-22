@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from msnGUI import Ui_MainWindow
+from clientClient import Sender
 
 class Logic(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
@@ -8,6 +9,9 @@ class Logic(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton.clicked.connect(self.switchPanel)
         self.pseudo=""
         self.lineEdit.editingFinished.connect(self.clearField)
+        self.msgSender=""
+
+
 
     def switchPanel(self):
         if self.pseudo != "":
@@ -20,6 +24,13 @@ class Logic(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.pseudo = sender.text()
                 self.label.setText(sender.text())
         sender.setText("")
+
+    def initConnection(self, window):
+        self.msgSender = Sender()
+
+
+
+
 
 
 app = QtWidgets.QApplication([])

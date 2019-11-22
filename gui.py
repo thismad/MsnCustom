@@ -75,7 +75,7 @@ class communicationFrame(Frame):
             self.pseudo.set(self.entry.get())
             self.pseudoEntered = True
         else:
-            self._msgToSend = self.pseudo.get() + ": " + self._msgToSend
+            self._msgToSend = self.pseudo.get() + "%: " + self._msgToSend
             self.client.sendToStream(self._msgToSend)
 
         self.entry.set("")
