@@ -37,6 +37,7 @@ class Server:
                 for client in clientToRead:
                     receivedMsg = (client.recv(1024))
                     self.handleSerial(receivedMsg, client)
+                self.updateClientsConnectedPseudos()
 
 
 

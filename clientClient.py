@@ -46,7 +46,7 @@ class Sender: #controller
             # separation caracter is '/' so we cut at this place
             newPseudoList = msgDeserialized.split('/')
             for pseud in newPseudoList:
-                if pseud not in self.pseudoConnectedList:
+                if not (pseud in self.pseudoConnectedList):
                     self.pseudoConnectedList.append(pseud)
                     self.c.pseudoChangedSignal.emit()
 
