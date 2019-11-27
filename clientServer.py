@@ -49,6 +49,7 @@ class Server:
             self.sendMsgToAllSockets(receivedMsg)
 
         elif actionNb == Serializer.disconnected:
+            self.connectedSocketList.remove(socketClient)
             self.sendMsgToAllSockets(receivedMsg) # if disconnection message, resend it to all the sockets so they can update their connected List
             del self.connectedDict[socketClient]
             socketClient.close()

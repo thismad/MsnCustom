@@ -1,7 +1,7 @@
 class Serializer():
     textEntry = "01"
     pseudo = "00"
-    disconnected = "10"
+    disconnected = "03"
     pseudoList = "02"
 
     @staticmethod
@@ -17,7 +17,7 @@ class Serializer():
     @staticmethod
     def serializeDisconnection(pseudo):
         pseudo = Serializer.disconnected + pseudo
-        return Serializer.disconnected.encode()
+        return pseudo.encode()
 
     @staticmethod
     def serializePseudoList(pseudoList):

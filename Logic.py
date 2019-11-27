@@ -60,10 +60,16 @@ class Logic(QtWidgets.QMainWindow, Ui_MainWindow):
         lenghtOfPseudoList = len(self.msgSender.pseudoConnectedList)
         if lenghtOfPseudoList !=0:
             self.label_7.setText(self.msgSender.pseudoConnectedList[0])
-            if lenghtOfPseudoList > 1:
-                self.label_8.setText(self.msgSender.pseudoConnectedList[1])
-                if lenghtOfPseudoList > 2:
-                    self.label_9.setText(self.msgSender.pseudoConnectedList[2])
+
+        if lenghtOfPseudoList > 1:
+            self.label_8.setText(self.msgSender.pseudoConnectedList[1])
+        else :
+            self.label_8.setText("")
+
+        if lenghtOfPseudoList > 2:
+            self.label_9.setText(self.msgSender.pseudoConnectedList[2])
+        else :
+            self.label_9.setText("")
 
 
 
