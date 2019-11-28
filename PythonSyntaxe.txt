@@ -1,0 +1,234 @@
+PYTHON
+
+# : comments
+
+if condition:
+elif condition:
+else :
+
+while condition:
+
+for x in sequence:
+
+for number in range(7):
+
+for item_index, fish in enumerate(list):
+
+list_a = []                        # empty
+
+list_b = [1, 2, 3, 4]              # 4 elements
+
+list_c = [1, 'cat', 0.23]          # mixed types
+
+list_d = [1, ['cat', 'dog'], 2, 3] # list in list
+
+list_e = [1]*10 #a list of 1s of length 10
+
+list_f = list(range(5)) #turns range object into a list
+
+    Use len(list1) to find the length of the list.
+    list1.append(element) to add an element to the end of the list.
+    list1.insert(index, element) to add an element to an index in the list
+    list1.extend(list2) to extend the elements of list1 with the elements of list2
+    list1.pop() removes last element from the list
+    list1.pop(index) removes the element at the given index
+    list1.remove(element) removes the first instance of the given element
+
+tuple_1 = ("wash", "your", "hands", "with", "soap")
+
+shopping_list = {"apples": 3, "pears":2, "eggs":6, "bread":1, "yogurt":1}
+
+book_dict = {}
+
+#add key value pairs
+book_dict["vonnegut"] = "cat\'s cradle"
+book_dict["ishiguro"] = "never let me go"
+
+# we can retrieve the dict keys:
+print(book_dict.keys())
+# and the dict values:
+print(book_dict.values())
+
+#we can also iterate through the dict keys and values with a for loop
+for key, value in book_dict.items():
+    print(key, ":", value)
+
+#we can modify the value of a key
+book_dict["ishiguro"] = "a pale view of hills"
+
+#and we can remove a key completely
+removed_value = book_dict.pop("ishiguro")
+
+#I want to create a new list with all these items doubled.
+doubled_list = [2*elem for elem in list_of_numbers]
+
+#A new list with all these items as floats
+float_list = [float(elem) for elem in list_of_numbers]
+
+#capturer des paramètres dans un tuple
+def func(*params)
+
+#capturer des paramètres dans un dico (paramètres nommés : p = 4)
+def func(**params)
+
+#enregistrer des objets sur un fichier
+pickler = pickle.Pickler(fichier)
+pickler.dump(objet)
+
+#lire le prochain objet sur un fichier
+pickler = pickler.Unpickler(fichiers)
+objet = pickler.load()
+
+#OO --------------------------------------------------------------------------
+#créer une classe
+class nom_classe:
+    compteur = 0 #attribut de classe
+    def __init__(self,arg): #constructeur
+        self.arg = arg
+        compteur +=1
+
+    def combien(cls) #methode de classe
+        print("combien au compteur ? : {}".format(cls.compteur))
+
+    combien = classmethod(combien) #indiquer que c'est une méthode de classe
+
+
+#encapsulation et propriétés. (on se base sur le changement de nom pour rendre un attribut privé. (MDR))
+class Personne:
+    def __init__(self, nom):
+        self._nom = nom
+
+    def _get_nom(self):
+        return self._nom
+
+    def _set_nom(self,nom):
+        self._nom = nom
+
+    nom = property(_get_nom, _set_nom) “voir à quoi ca sert de faire une property car au final on a les meme accès à la variable”
+
+#liste de fonctions speciales utiles :
+"""
+       __del__(self)  #permet de gérer la destruction de l'objet
+       __repr__(self) #permet de gérer la représentation (return str), quand on tape directement l'objet dans le terminal
+       __str__(self) #permet de gérer l'affichage avec print(), si aucune méthode str n'est définie alors python appelle repr pour le print
+       __getattr__(self, nom) #permet de gérer le cas ou l'attribut nom n'existe pas
+       __setattr__(self, nom_attr, val__attr) #appelle la fonction quand on fait objet.nom_attr = val_attr.
+       __contains__(self, var) #permet d'utiliser : 5 in ma_liste
+       __add__(self, objet_a_ajouter) #permet d'utiliser + entre les objets
+       *sub, mul,truediv, pow.... existent aussi similaire a add
+############# Pickle
+       __getstate__(self) #return ce qui doit etre serialisé par pickle dans le fichier (si getstate renvoie autre chose que un dict, alors il faut redéfinir setstate également sinon
+       __setstate__(self, doct_attr) #après avoir load() et désérialisé
+       __lt__(self,objet_a_comparer) # à redéfinir lorsque l'on veut comparer nos objets entre eux
+"""
+
+#TRI de listes
+sorted(ma_liste) #retourne une nouvelle liste
+ma_liste.sort() #modifie la liste elle meme
+    #les 2 methodes ont un argument key qui prend une fonction lambda qui retourne ce sur quoi doit s'effectuer le tri
+    #argument reverse qui prend un bool
+from operator import itemgetter #on passe itemgetter en key pour le tri (methodes de operator sont plus rapides pour le tri de grds nombres)
+sorted(ma_liste, key = itemgetter(2))
+
+from operator import attrgetter #pareil que itemgetter mais pour les objets
+sorted(ma_liste, key = attrgetter("nom_attribut"))
+
+
+#Heritage
+issubclass(classe_A,classe_B) #return true if classe A herite de classe B
+isinstance(classe_A,classe_B) #return true if classe A est issu de B ou d'une de ses classes filles
+
+#Exception
+class BaseException #classe mère de toutes les excptions; A heriter pour modéliser une except qui n'est pas une erreur;
+class Exception #classe mère de toutes les exceptions d'erreur
+    #creation de classe exception doivent contenir innit et str car lorsque l'exception est levée elle doit etre affichée
+
+#Iterateurs
+
+def __iter__(self) #renvoie un itérateur
+def __next__(self, chaine_a_parcourir) #raise StopIteration si fini, renvoi l'element suivant dans la liste
+
+
+#Generateurs
+def intervalle(borne_inf, borne_sup):
+    """Générateur parcourant la série des entiers entre borne_inf et borne_sup.
+    Notre générateur doit pouvoir "sauter" une certaine plage de nombres
+    en fonction d'une valeur qu'on lui donne pendant le parcours. La
+    valeur qu'on lui passe est la nouvelle valeur de borne_inf.
+
+    Note: borne_inf doit être inférieure à borne_sup"""
+    borne_inf += 1
+    while borne_inf < borne_sup:
+        valeur_recue = (yield borne_inf) #ici est envoyé la valeur
+        if valeur_recue is not None: # Notre générateur a reçu quelque chose, on utilise generateur.send(objet) pour envoyer qqch au generateur
+            borne_inf = valeur_recue
+        borne_inf += 1
+
+#Expressions régulières
+"regex = regular expression"
+^cha #cherche cha en début de chaîne
+cha$ #cherche cha en fin de chaîne
+chat* #cherche cha ou chat ou chatt... le t peut apparaître 0 ou infini fois
+* #0, 1 ou plus
++ #1 ou plus
+? #0 ou 1
+{4}#4 occurences
+[abcd] #1 une des lettres parmi a b c ou d
+[A-Z] #1 lettre majuscule
+#mettre r devant une expression pour éviter les problèmes avec les antislash
+
+#RE MODULE
+re.search(r"abc", "abcdef")
+re.sub(r"(ab)", r" \1 ", "abcdef" ) #remplace abcdef par ab cdef
+  #on peut donner des noms plutot que des numéros de grpe : syntaxe :
+  (?P<nomGroupe>[0-9]{2})  groupe ([0-9]{2}) nommé nomGroupe
+  #pour le call dans sub on utilise :
+  \g<nomGroupe
+
+ re.compile(expresion) #transforme l'expression sous forme d'objet pour la garder
+                        #en mémoire
+
+#Programmation Systeme
+#les flux de bases : sys.__stdin__, etc..
+sys.stdin #retourne le flux d'entrée
+sys.stdout #retourne le flux de sortie (de base l'écran)
+sys.stderr #flux d'erreur
+
+#recevoir des signaux dans une fonction
+import signal
+#créer une fonction qui prend en param (signal, frame)
+#connecter le signal à la fonction :
+signal.signal(signal.SIGINT, nomFonction) #SIGINT = signal envoyé a l'arret du programme
+
+
+#arguments de la ligne de commande
+sys.argv #contient la liste des arguments
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("x", type = int, help = "le nombre a mettre au carré")
+parser.add_argument("-v", "--verbose", action="store_true", help="augmente la verbosité")
+parser.parse_args() #retourne les arguments interprétés
+
+#Chiffrement MDP
+import hashlib
+from getpass import getpass
+haslib.algorithm_guaranteed #liste de tous les algos garantis par PYTHON
+#obtenir une chaine de byte depuis str : encode(), ou b minuscule avt l'ouverture de la chaine
+hashlib.sha1(chaineMdp).hexdigest() #hexdigest() renvoie une chaine str en hexa
+input = getpass("tapez votre mdp : ")
+
+#THREADS
+from threading import Thread, RLock
+
+verrou = RLock() #create a lock for thread synchronisation, in case there are 2 threads sharing resources
+class Afficher(Thread)
+
+    def __init__(self):
+        Thread.__init__(self)
+        .....
+
+    def run(self, args):
+        #function called when Thread.start()
+        with verrou: #if the thread got the lock it can process otherwise no, then at the end of the block gives the verrou backD
+            #code to run

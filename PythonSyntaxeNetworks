@@ -1,0 +1,27 @@
+PythonSyntaxeNetworks.txt
+
+UDP = plus rapide mais possible pertes
+TCP = sur de la réception mais plus lent que UDP
+
+import socket #dans le cas d'une connexion TCP, il prend 2 params :
+              #socket.AF_INET -> famille d'adresses internet
+              #socket.SOCK_STREAM -> SOCK_STREAM type du socket pour le protocole TCP
+connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+#connecter le socket
+connexion_principale.bind(("", 12800))
+
+#faire écouter le socket
+connexion_principale.listen(5) #5 = nombre maximale de connexion possible en "attente de connexion"
+
+
+#accepter connexion venant du client
+connexion_avec_client, infos_connexion = connexion_principale.accept()
+                        #bloque le prg et return un nouveau socket et un tuple : le socket connecté qui vient de se créer
+                        # + un tuple représentant l'adresse IP et le port de connexion du client
+
+#envoyer des msgs
+connexion_avec_client.send(b"chaine de caracs") #envoie au client la chaine en bytes
+
+#recevoir des msgs
+connexion_avec_serveur.recv(1024) #1024 par défaut (nbre de caracs recus)
